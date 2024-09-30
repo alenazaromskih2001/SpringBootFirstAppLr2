@@ -8,6 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import ru.zaromskih.SpringBootFirstAppLr2.exception.UnsupportedCodeException;
 import ru.zaromskih.SpringBootFirstAppLr2.exception.ValidationFailedException;
 import ru.zaromskih.SpringBootFirstAppLr2.model.Reguest;
 import ru.zaromskih.SpringBootFirstAppLr2.model.Response;
@@ -42,17 +43,26 @@ public class MyController {
 
         try {
             validationService.isValid(bindingResult);
+            if("123".equals(reguest.getUid())){ //поле uid 123
+                throw new UnsupportedCodeException("123 простая комбинацию, введите более сложную.");
+            }
 
         } catch (ValidationFailedException e) {
             response.setCode("failed");
             response.setErrorCode("ValidationException");
-            response.setErrorMessage("Ошибка валидации");
+            response.setErrorMessage("Ошибка валидации.");
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+
+        } catch (UnsupportedCodeException e){
+            response.setCode("failed");
+            response.setErrorCode("ValidationException");
+            response.setErrorMessage("123 простая комбинацию, введите более сложную.");
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 
         } catch (Exception e) {
             response.setCode("failed");
             response.setErrorCode("UnknownException");
-            response.setErrorMessage("Произошла непредвиденная ошибка");
+            response.setErrorMessage("Произошла непредвиденная ошибка.");
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
