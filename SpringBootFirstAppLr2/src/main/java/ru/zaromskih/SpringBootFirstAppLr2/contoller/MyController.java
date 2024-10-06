@@ -36,7 +36,7 @@ public class MyController {
         Response response = Response.builder()
                 .uid(reguest.getUid())
                 .operationUid(reguest.getOperationUid())
-                .systemName(reguest.getSystemName())
+                .systemName(Systems.CRM)
                 .systemTime(DateTimeUtil.getCustomFormat().format(new Date()))
                 .code(Codes.SUCCESS)
                 .errorCode(ErrorCodes.EMPTY)
@@ -45,29 +45,38 @@ public class MyController {
 
         try {
             validationService.isValid(bindingResult);
+            log.info("Request is valid");
             if ("123".equals(reguest.getUid())) { //поле uid 123
                 throw new UnsupportedCodeException("123 простая комбинацию, введите более сложную.");
             }
 
         } catch (ValidationFailedException e) {
+            log.error("VALIDATION failed: {}", e.getMessage());
             response.setCode(Codes.FAILED);
             response.setErrorCode(ErrorCodes.VALIDATION_EXCEPTION);
             response.setErrorMessage(ErrorMessages.VALIDATION);
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 
         } catch (UnsupportedCodeException e) {
+            log.error("UNSUPPORTED failed: {}", e.getMessage());
             response.setCode(Codes.FAILED);
             response.setErrorCode(ErrorCodes.UNSUPPORTED_EXCEPTION);
             response.setErrorMessage(ErrorMessages.UNSUPPORTED);
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 
         } catch (Exception e) {
+            log.error("UNKNOWN error: {}", e.getMessage());
             response.setCode(Codes.FAILED);
             response.setErrorCode(ErrorCodes.UNKNOWN_EXCEPTION);
             response.setErrorMessage(ErrorMessages.UNKNOWN);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+
+        log.info("response: {}", response);
         return new ResponseEntity<>(response, HttpStatus.OK);
+
+
+
     }
 }

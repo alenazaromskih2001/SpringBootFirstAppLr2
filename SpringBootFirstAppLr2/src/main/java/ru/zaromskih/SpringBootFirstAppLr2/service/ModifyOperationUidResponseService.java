@@ -1,8 +1,15 @@
 package ru.zaromskih.SpringBootFirstAppLr2.service;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 import ru.zaromskih.SpringBootFirstAppLr2.model.Response;
 
 import java.util.UUID;
+
+@Slf4j
+@Service
+@Qualifier("ModifyOperationUidResponseService")
 
 public class ModifyOperationUidResponseService
         implements ModifyResponseService {
@@ -10,6 +17,7 @@ public class ModifyOperationUidResponseService
     public Response modify(Response response) {
         UUID uuid = UUID.randomUUID();
         response.setOperationUid(uuid.toString());
+        log.info("Generated new operationUid: {}", uuid);
         return response;
     }
 }

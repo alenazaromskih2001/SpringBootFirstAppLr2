@@ -7,11 +7,13 @@ import lombok.Data;
 @Builder
 public class Response {
 
+
     private String uid;
     private String operationUid;
-    private String systemName;
     private String systemTime;
+    private Systems systemName;
     private Codes code;
     private ErrorCodes errorCode;
     private ErrorMessages errorMessage;
+
 }

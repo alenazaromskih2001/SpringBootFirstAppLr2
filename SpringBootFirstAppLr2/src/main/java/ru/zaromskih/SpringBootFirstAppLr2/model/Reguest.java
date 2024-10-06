@@ -20,7 +20,7 @@ public class Reguest {
         return "{" +
                 "uid='" + uid + '\'' +
                 ", operationUid='" + operationUid + '\'' +
-                ", systemNam" + systemName + '\'' +
+                ", systemName" + systemName + '\'' +
                 ", systemTime='" + systemTime + '\'' +
                 ", source=`" + source + '\'' +
                 ", communicationId=" + communicationId +
@@ -37,11 +37,11 @@ public class Reguest {
     @Size(max = 32)
     private String operationUid;
 
-    private String systemName;
+
 
     @NotBlank
     private String systemTime;
-
+    private Systems systemName;
     private String source;
 
     @NotBlank
